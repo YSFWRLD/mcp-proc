@@ -1,0 +1,331 @@
+{
+  "name": "Procurement MCP Server (prototype)",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "procurement",
+        "instructions": "Procurement assistant server (prototype).\n\nTypical flow:\n1. create_rfq - log the buyer's request and get an rfq_id.\n2. find_suppliers - pull approved suppliers for that spend category.\n3. recommend_supplier - pass those supplier rows in to get a ranked recommendation.\n\nlist_rfqs reads back everything logged so far. All data lives in one Google Sheet with a 'Suppliers' tab and an 'RFQs' tab. Always confirm quantity and needed_by with the user before creating an RFQ."
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        208
+      ],
+      "id": "f2695248-64d0-470e-a841-0e2d3c076e2f",
+      "name": "Procurement MCP Server",
+      "webhookId": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create a new Request For Quotation (RFQ) and log it as a row in the RFQs sheet. Use this when a user asks to raise, open, or submit a purchase request. Returns the row that was written, including the generated rfq_id.",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "YOUR_SHEET_NAME",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 0,
+          "mode": "list",
+          "cachedResultName": "RFQs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "rfq_id": "=RFQ-{{  $now.toFormat('yyyyMMdd-HHmmss') }}",
+            "created_at": "={{  $now.toISO() }}",
+            "requester": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('requester', ``, 'string') }}",
+            "item": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('item', ``, 'string') }}",
+            "category": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('category', ``, 'string') }}",
+            "quantity": "={{ $fromAI('quantity', ``, 'number') }}",
+            "unit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('unit', ``, 'string') }}",
+            "needed_by": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('needed_by', ``, 'string') }}",
+            "budget_max": "={{ $fromAI('budget_max', ``, 'number') }}",
+            "notes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('notes', ``, 'string') }}",
+            "status": "=Open"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "rfq_id",
+              "displayName": "rfq_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "requester",
+              "displayName": "requester",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "item",
+              "displayName": "item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "unit",
+              "displayName": "unit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "needed_by",
+              "displayName": "needed_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget_max",
+              "displayName": "budget_max",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        64,
+        432
+      ],
+      "id": "b13ae987-ed2a-4eae-8b06-4432b88cd4fb",
+      "name": "create_rfq",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up approved suppliers in the Suppliers sheet, filtered by spend category. Returns each supplier's unit_price, lead_time_days, rating, on_time_rate, min_order_qty and contact. Call this before recommend_supplier.",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "YOUR_SHEET_NAME",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 0,
+          "mode": "list",
+          "cachedResultName": "Suppliers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "category",
+              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values0_Value', `Spend category to filter suppliers by. Must be exactly one of: IT Hardware, Office Supplies, Logistics, Packaging, MRO, Professional Services.`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        304,
+        448
+      ],
+      "id": "482ccc76-62d7-4be9-b0a3-dea688afaa99",
+      "name": "find_suppliers",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Rank candidate suppliers and recommend one, using a weighted score over unit price, lead time, rating and on-time delivery rate. Pass the rows returned by find_suppliers. Returns the recommended supplier, a plain-language rationale, and the full ranking with score breakdowns.",
+        "jsCode": "// Scores candidate suppliers and returns a ranked recommendation.\n// `query` matches the input schema: { suppliers: [...], quantity?: number, weights?: {...} }\n\nconst rowsIn = Array.isArray(query.suppliers) ? query.suppliers : [];\nif (rowsIn.length === 0) {\n  return 'No suppliers were passed in. Call find_suppliers first, then pass its rows into this tool as \"suppliers\".';\n}\n\nconst w = Object.assign(\n  { price: 0.4, lead_time: 0.25, rating: 0.2, reliability: 0.15 },\n  query.weights || {}\n);\nconst qty = Number(query.quantity) > 0 ? Number(query.quantity) : 1;\n\nconst num = (v, fallback) => {\n  const n = Number(String(v === undefined || v === null ? '' : v).replace(/[^0-9.\\-]/g, ''));\n  return isFinite(n) ? n : fallback;\n};\n\nconst rows = rowsIn.map((r) => ({\n  name: r.name || r.supplier || r.supplier_name || 'Unknown supplier',\n  country: r.country || '',\n  unit_price: num(r.unit_price !== undefined ? r.unit_price : r.price, 0),\n  lead_time_days: num(r.lead_time_days !== undefined ? r.lead_time_days : r.lead_time, 0),\n  rating: num(r.rating, 0),\n  on_time_rate: num(r.on_time_rate, 0),\n  min_order_qty: num(r.min_order_qty, 0),\n  contact: r.contact || r.email || ''\n}));\n\nconst spans = {};\n['unit_price', 'lead_time_days', 'rating', 'on_time_rate'].forEach((k) => {\n  const vals = rows.map((r) => r[k]);\n  spans[k] = { min: Math.min.apply(null, vals), max: Math.max.apply(null, vals) };\n});\n\nconst norm = (val, key, higherIsBetter) => {\n  const s = spans[key];\n  if (s.max === s.min) return 1;\n  const t = (val - s.min) / (s.max - s.min);\n  return higherIsBetter ? t : 1 - t;\n};\n\nconst scored = rows\n  .map((r) => {\n    const breakdown = {\n      price: +(norm(r.unit_price, 'unit_price', false) * w.price).toFixed(4),\n      lead_time: +(norm(r.lead_time_days, 'lead_time_days', false) * w.lead_time).toFixed(4),\n      rating: +(norm(r.rating, 'rating', true) * w.rating).toFixed(4),\n      reliability: +(norm(r.on_time_rate, 'on_time_rate', true) * w.reliability).toFixed(4)\n    };\n    const score = +Object.keys(breakdown)\n      .reduce((a, k) => a + breakdown[k], 0)\n      .toFixed(4);\n    const flags = [];\n    if (r.min_order_qty > qty) flags.push('minimum order qty ' + r.min_order_qty + ' is above the requested ' + qty);\n    if (r.on_time_rate > 0 && r.on_time_rate < 0.9) flags.push('on-time delivery below 90%');\n    return Object.assign({}, r, {\n      extended_cost: +(r.unit_price * qty).toFixed(2),\n      score: score,\n      breakdown: breakdown,\n      flags: flags\n    });\n  })\n  .sort((a, b) => b.score - a.score);\n\nconst winner = scored[0];\nconst runnerUp = scored[1];\n\nconst why =\n  winner.name + ' scores ' + winner.score + '/1.00 on the weighted model: ' +\n  'unit price ' + winner.unit_price + ', lead time ' + winner.lead_time_days + ' days, ' +\n  'rating ' + winner.rating + ', on-time rate ' + winner.on_time_rate + '. ' +\n  'Extended cost for ' + qty + ' units is ' + winner.extended_cost + '.' +\n  (runnerUp ? ' Closest alternative: ' + runnerUp.name + ' at ' + runnerUp.score + '.' : '') +\n  (winner.flags.length ? ' Caveats: ' + winner.flags.join('; ') + '.' : '');\n\nreturn JSON.stringify(\n  { recommended: winner.name, contact: winner.contact, why: why, weights_used: w, quantity: qty, ranking: scored },\n  null,\n  2\n);\n",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"suppliers\": {\n      \"type\": \"array\",\n      \"description\": \"Candidate suppliers to compare, normally the rows returned by find_suppliers.\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"name\": { \"type\": \"string\" },\n          \"country\": { \"type\": \"string\" },\n          \"unit_price\": { \"type\": \"number\" },\n          \"lead_time_days\": { \"type\": \"number\" },\n          \"rating\": { \"type\": \"number\", \"description\": \"0-5\" },\n          \"on_time_rate\": { \"type\": \"number\", \"description\": \"0-1\" },\n          \"min_order_qty\": { \"type\": \"number\" },\n          \"contact\": { \"type\": \"string\" }\n        },\n        \"required\": [\"name\", \"unit_price\", \"lead_time_days\"]\n      }\n    },\n    \"quantity\": { \"type\": \"number\", \"description\": \"Quantity from the RFQ. Used for extended cost and minimum-order checks.\" },\n    \"weights\": {\n      \"type\": \"object\",\n      \"description\": \"Optional scoring weights, should sum to 1. Defaults: price 0.4, lead_time 0.25, rating 0.2, reliability 0.15.\",\n      \"properties\": {\n        \"price\": { \"type\": \"number\" },\n        \"lead_time\": { \"type\": \"number\" },\n        \"rating\": { \"type\": \"number\" },\n        \"reliability\": { \"type\": \"number\" }\n      }\n    }\n  },\n  \"required\": [\"suppliers\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        448
+      ],
+      "id": "84f2838c-dfd5-42f2-8c70-2e385afc77e4",
+      "name": "recommend_supplier"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Read every RFQ currently logged in the RFQs sheet. Use this to check the status of past requests or to find an rfq_id.",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "YOUR_SHEET_NAME",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 0,
+          "mode": "list",
+          "cachedResultName": "RFQs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        448
+      ],
+      "id": "fe9495e2-29d5-4a04-b7f4-d1101372cc77",
+      "name": "list_rfqs",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "create_rfq": {
+      "ai_tool": [
+        [
+          {
+            "node": "Procurement MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_suppliers": {
+      "ai_tool": [
+        [
+          {
+            "node": "Procurement MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "recommend_supplier": {
+      "ai_tool": [
+        [
+          {
+            "node": "Procurement MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list_rfqs": {
+      "ai_tool": [
+        [
+          {
+            "node": "Procurement MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "00000000-0000-0000-0000-000000000000",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "YOUR_INSTANCE_ID"
+  },
+  "nodeGroups": [],
+  "id": "YOUR_CREDENTIAL_ID",
+  "tags": []
+}
