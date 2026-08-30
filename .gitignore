@@ -1,0 +1,13 @@
+# Local n8n exports can contain credential and sheet identifiers.
+workflow.local.json
+*.local.json
+
+# Environment and dependency files
+.env
+.env.*
+node_modules/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
