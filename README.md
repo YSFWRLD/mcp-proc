@@ -25,8 +25,8 @@ create_rfq -> find_suppliers -> recommend_supplier
 | --- | ---: | --- |
 | Unit price | 40% | Lower |
 | Lead time | 25% | Lower |
-| On-time delivery | 20% | Higher |
-| Rating | 15% | Higher |
+| On-time delivery | 15% | Higher |
+| Rating | 20% | Higher |
 
 The workflow also flags suppliers whose minimum order exceeds the requested
 quantity and suppliers with an on-time rate below 90%.
