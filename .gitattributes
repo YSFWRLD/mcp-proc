@@ -1,0 +1,5 @@
+* text=auto eol=lf
+
+# n8n workflow export. `linguist-detectable` opts JSON into language stats,
+# which linguist hides for data formats by default.
+procurement-mcp-workflow.json linguist-language=JSON linguist-detectable

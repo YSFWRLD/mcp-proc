@@ -61,8 +61,12 @@ Category matching is exact, so keep casing and whitespace consistent.
 1. Create the two sheet tabs and header rows shown above.
 2. Import [`procurement-mcp-workflow.json`](procurement-mcp-workflow.json) into n8n.
 3. Reconnect every Google Sheets node to your own OAuth credential.
-4. Replace `YOUR_GOOGLE_SHEET_ID` with your sheet.
-5. Configure authentication on the MCP Server Trigger.
+4. Replace `YOUR_GOOGLE_SHEET_ID` with your sheet id in all three Google
+   Sheets nodes. Tabs are selected by name (`RFQs`, `Suppliers`), so they
+   need no change as long as your tab names match the schema above.
+5. Configure authentication on the MCP Server Trigger. The export ships
+   inactive and unauthenticated on purpose - do not publish it until you
+   have added bearer or header auth.
 6. Publish the workflow and connect your MCP client to:
 
    ```text
@@ -79,6 +83,10 @@ Use n8n Credentials for OAuth tokens and secrets. Do not commit raw exports from
 an active instance without removing credential IDs, sheet IDs, execution data,
 and pinned data.
 
+The export in this repository has been sanitized on those terms: it carries no
+credential ids, no webhook id, no instance id, and no real spreadsheet id or
+tab gids.
+
 ## Limitations
 
 - RFQ IDs use timestamps to the second and can collide under simultaneous use.
@@ -88,3 +96,7 @@ and pinned data.
 
 This is a working prototype intended for learning and internal experimentation,
 not an unattended production procurement system.
+
+## License
+
+MIT - see [LICENSE](LICENSE).

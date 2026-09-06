@@ -13,8 +13,7 @@
         208
       ],
       "id": "f2695248-64d0-470e-a841-0e2d3c076e2f",
-      "name": "Procurement MCP Server",
-      "webhookId": "00000000-0000-0000-0000-000000000000"
+      "name": "Procurement MCP Server"
     },
     {
       "parameters": {
@@ -24,16 +23,12 @@
         "documentId": {
           "__rl": true,
           "value": "YOUR_GOOGLE_SHEET_ID",
-          "mode": "list",
-          "cachedResultName": "YOUR_SHEET_NAME",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 0,
-          "mode": "list",
-          "cachedResultName": "RFQs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+          "value": "RFQs",
+          "mode": "name"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -164,13 +159,7 @@
         432
       ],
       "id": "b13ae987-ed2a-4eae-8b06-4432b88cd4fb",
-      "name": "create_rfq",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Google Sheets account"
-        }
-      }
+      "name": "create_rfq"
     },
     {
       "parameters": {
@@ -179,16 +168,12 @@
         "documentId": {
           "__rl": true,
           "value": "YOUR_GOOGLE_SHEET_ID",
-          "mode": "list",
-          "cachedResultName": "YOUR_SHEET_NAME",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 0,
-          "mode": "list",
-          "cachedResultName": "Suppliers",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+          "value": "Suppliers",
+          "mode": "name"
         },
         "filtersUI": {
           "values": [
@@ -207,13 +192,7 @@
         448
       ],
       "id": "482ccc76-62d7-4be9-b0a3-dea688afaa99",
-      "name": "find_suppliers",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Google Sheets account"
-        }
-      }
+      "name": "find_suppliers"
     },
     {
       "parameters": {
@@ -239,16 +218,12 @@
         "documentId": {
           "__rl": true,
           "value": "YOUR_GOOGLE_SHEET_ID",
-          "mode": "list",
-          "cachedResultName": "YOUR_SHEET_NAME",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 0,
-          "mode": "list",
-          "cachedResultName": "RFQs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+          "value": "RFQs",
+          "mode": "name"
         },
         "options": {}
       },
@@ -259,13 +234,7 @@
         448
       ],
       "id": "fe9495e2-29d5-4a04-b7f4-d1101372cc77",
-      "name": "list_rfqs",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Google Sheets account"
-        }
-      }
+      "name": "list_rfqs"
     }
   ],
   "pinData": {},
@@ -315,17 +284,11 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "00000000-0000-0000-0000-000000000000",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "YOUR_INSTANCE_ID"
-  },
   "nodeGroups": [],
-  "id": "YOUR_CREDENTIAL_ID",
   "tags": []
 }
